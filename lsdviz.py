@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-'''Laplacian structural decomposition viewer'''
+"""Laplacian structural decomposition viewer"""
 
 from argparse import ArgumentParser
 import sys
@@ -11,11 +11,10 @@ import mimetypes
 import flask
 import json
 
-import segmenter
+from segmenter import Segmenter
 
 
 def process_arguments(args):
-
     parser = ArgumentParser(description=__doc__)
 
     parser.add_argument('-p', '--port', dest='port',
@@ -38,7 +37,7 @@ app.config.from_object(__name__)
 
 @app.route('/')
 def index():
-    '''The main page'''
+    """The main page"""
     return flask.render_template('lsdviz.html',
                                  filename=params.filename,
                                  metadata=os.path.basename(params.filename),
@@ -103,7 +102,7 @@ def get_analysis():
 
 if __name__ == '__main__':
     params = process_arguments(sys.argv[1:])
-
+    segmenter: Segmenter = Segmenter()
     segment_hierarchy = segmenter.segment_file(params.filename)
 
     app.run(host=params.host, port=params.port, debug=False)
